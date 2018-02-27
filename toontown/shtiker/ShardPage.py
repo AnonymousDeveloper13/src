@@ -9,6 +9,16 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
 
+POP_COLORS = (Vec4(0.4, 0.4, 1.0, 1.0), Vec4(0.4, 1.0, 0.4, 1.0),	
+              Vec4(1.0, 0.4, 0.4, 1.0))	
+	
+def compareShardTuples(a, b):	
+    if a[1] < b[1]:	
+        return -1	
+    elif b[1] < a[1]:	
+        return 1	
+    else:	
+        return 0	
 
 class ShardPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('ShardPage')
