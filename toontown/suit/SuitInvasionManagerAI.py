@@ -110,7 +110,6 @@ class SuitInvasionManagerAI:
         taskMgr.remove('invasionTimeout')
 
         # Update the invasion tracker on the districts page in the Shticker Book:
-        self.air.districtStats.b_setInvasionStatus(0)
 
         # Revert what was done when the invasion started:
         self.notifyInvasionEnded()

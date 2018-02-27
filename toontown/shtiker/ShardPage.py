@@ -10,57 +10,6 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
 
 
-ICON_COLORS = (Vec4(0.863, 0.776, 0.769, 1.0), Vec4(0.749, 0.776, 0.824, 1.0),
-               Vec4(0.749, 0.769, 0.749, 1.0), Vec4(0.843, 0.745, 0.745, 1.0))
-
-POP_COLORS = (Vec4(0.4, 0.4, 1.0, 1.0), Vec4(0.4, 1.0, 0.4, 1.0),
-              Vec4(1.0, 0.4, 0.4, 1.0))
-
-def compareShardTuples(a, b):
-    if a[1] < b[1]:
-        return -1
-    elif b[1] < a[1]:
-        return 1
-    else:
-        return 0
-
-def setupInvasionMarkerAny(node):
-    pass # TODO
-
-def setupInvasionMarker(node, invasionStatus):
-    if node.find('**/*invasion-marker'):
-        return
-
-    markerNode = node.attachNewNode('invasion-marker')
-
-    if invasionStatus == 5:
-        setupInvasionMarkerAny(markerNode)
-        return
-
-    icons = loader.loadModel('phase_3/models/gui/cog_icons')
-
-    if invasionStatus == 1:
-        icon = icons.find('**/CorpIcon').copyTo(markerNode)
-    elif invasionStatus == 2:
-        icon = icons.find('**/LegalIcon').copyTo(markerNode)
-    elif invasionStatus == 3:
-        icon = icons.find('**/MoneyIcon').copyTo(markerNode)
-    else:
-        icon = icons.find('**/SalesIcon').copyTo(markerNode)
-
-    icons.removeNode()
-
-    icon.setColor(ICON_COLORS[invasionStatus - 1])
-    icon.setPos(0.54, 0, 0.015)
-    icon.setScale(0.053)
-
-def removeInvasionMarker(node):
-    markerNode = node.find('**/*invasion-marker')
-
-    if not markerNode.isEmpty():
-        markerNode.removeNode()
-
-
 class ShardPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('ShardPage')
 
@@ -184,10 +133,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
             model.removeNode()
             button.removeNode()
 
-        invasionMarker = NodePath('InvasionMarker-%s' % shardId)
-        invasionMarker.reparentTo(shardButtonParent)
-
-        return (shardButtonParent, shardButtonR, shardButtonL, invasionMarker)
+        return (shardButtonParent, shardButtonR, shardButtonL)
 
     def getPopColor(self, pop):
         if pop <= self.lowPop:
@@ -252,7 +198,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
         for i in xrange(len(curShardTuples)):
 
-            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, WVPop
 
             if shardId == actualShardId:
                 actualShardName = name
@@ -282,11 +228,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
             else:
                 buttonTuple[1]['state'] = DGG.NORMAL
                 buttonTuple[2]['state'] = DGG.NORMAL
-
-            if invasionStatus:
-                setupInvasionMarker(buttonTuple[3], invasionStatus)
-            else:
-                removeInvasionMarker(buttonTuple[3])
 
         for shardId, buttonTuple in self.shardButtonMap.items():
 
